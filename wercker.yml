@@ -1,0 +1,21 @@
+box: "node:6.10"
+build:
+  steps:
+    - 
+      script:
+        code: "npm install"
+        name: "A step that executes `npm install` command"
+    - 
+      script:
+        code: "openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout tls.key -out tls.crt -subj \"/CN=nginxsvc/O=nginxsvc\""
+        name: "Create TLS key and cert"
+deploy-to-oke:
+  box:
+    cmd: /bin/sh
+    id: alpine
+  steps:
+    - bash-template
+    - 
+      script:
+        code: "cat kubernetes-deployment.yml"
+        name: "Visualise Kubernetes config"
